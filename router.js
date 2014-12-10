@@ -11,13 +11,10 @@ var db_paths = [
 	'./data/retina1.logz.sqlite3'
 ];
 var dbz = {};
-db_paths.forEach(function(path){
-	dbz[path] = new sql.Database(path,sql.OPEN_READONLY);
-});
 
 module.exports = function(frags,req,res) {
 
-	var r = [];
+	var allrecords = [];
 
 	res.setHeader('Content-Type', mimetypes['json']);
 
@@ -29,24 +26,62 @@ module.exports = function(frags,req,res) {
 
 		case 'index':
 		case 'raw':
-		db_paths.forEach(function(path){
+		case 'dump':
+		db_paths.forEach(function(path,i){
+			dbz[path] = new sql.Database(path,sql.OPEN_READONLY);
 			dbz[path].serialize(function() {
 				dbz[path].all('SELECT * FROM `fs`',function(err,rows){
 					if (err) {
 						console.log(err);
 					} else {
-						r.push(rows);	
+						allrecords = allrecords.concat(rows);
+						if (i === db_paths.length-1) {
+
+							var smallest_val = allrecords.reduce(function(a,b){
+								if (a.ts < b.ts) {
+									return a;
+								} else {
+									return b;
+								}
+							});
+
+							smallest_val.d = new Date( smallest_val.ts );
+
+							var largest_val = allrecords.reduce(function(b,a){
+								if (a.ts < b.ts) {
+									return a;
+								} else {
+									return b;
+								}
+							});
+
+							/*
+							console.log('smallest val', new Date(smallest_val.ts));
+							console.log('largest val', new Date(largest_val.ts));
+							*/
+
+							var xx = {
+								smallest: smallest_val,
+								largest: largest_val
+							};
+
+							res.end(JSON.stringify(xx));
+
+							//res.end( JSON.stringify( r ) );
+						}
 					}
 					dbz[path].close();
 				});
 			});
 		});
+		break;
 
-		console.log(r.length);
+		case 'timeseries':
+		switch (frags[2]) {
+			case 'hourly':
 
-		(function(r){ setTimeout( console.log.bind(null,r.length) , 5000); })(r);
-
-		res.end( JSON.stringify( r ) );	
+			break;
+		}
 		break;
 
 		case 'test':
@@ -63,6 +98,6 @@ module.exports = function(frags,req,res) {
 	/*
 	res.end( JSON.stringify(sqlite2json.output()) );
 	*/
-	
+
 
 };
