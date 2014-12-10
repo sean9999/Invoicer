@@ -1,31 +1,37 @@
 "use strict";
 
-var finalhandler = require('finalhandler');
-var fs = require('fs');
-var http = require('http');
-var mimetypes = require('./mimetypes.json');
+var finalhandler = require('finalhandler'),
+	fs = require('fs'),
+	http = require('http'),
+	mimetypes = require('./mimetypes.json'),
+	router = require('./router.js'),
+	extension = function(){
+		return this.url.split('.').pop();
+	};
 
-var extension = function(){
-	return this.url.split('.').pop();
-};
 
 var server = http.createServer(function (req, res) {
+	
 	var done = finalhandler(req, res);
 
-	switch (req.url) {
+	var matches;
 
-		case '/datas':
-		//	grap all the SQLs you can, and pump them into a JSON stream
-		res.end( 'hi nerd!' );
+	var path_fragments = req.url.split('/').filter(function(frag){ return frag; });
+
+	switch (path_fragments[0]) {
+
+		case 'datas':
+		router(path_fragments,req,res);
 		break;
 
 		default:
 		fs.readFile('./app'+req.url, function (err, buf) {
 			if (err) return done(err);
+			//	set mimetype
 			res.setHeader('Content-Type', mimetypes[extension.call(req)] );
 			res.end(buf);
 		});
 	}
 });
 
-server.listen(3456);
+server.listen(7777);
