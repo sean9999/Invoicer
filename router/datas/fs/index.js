@@ -196,9 +196,4 @@ module.exports = function(frags,req,res) {
 
 	}
 
-	/*
-	res.end( JSON.stringify(sqlite2json.output()) );
-	*/
-
-
 };

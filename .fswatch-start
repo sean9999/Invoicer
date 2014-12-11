@@ -1,0 +1,2 @@
+#!/bin/bash
+fswatch -tu -n -Ee "\.git|\.fswatch" . >> .fswatch.`hostname`.log

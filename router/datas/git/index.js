@@ -1,23 +1,15 @@
 "use strict";
 
-var docroot = require('docroot');
-var Repo = require('git-tools');
-var repo = new Repo( docroot );
-
 module.exports = function(frags,req,res) {
-	/*
-	repo.activeDays(function( error, authors ) {
-		res.end( JSON.stringify(authors) );
-	});
-	*/
-
-	var spit = function(err,x){
-		if (err) {
-			console.log(err);
-		}
-		res.end(JSON.stringify([x]));
+	if (frags.length) {
+		//	sub-route
+		return require( __dirname + '/' + frags.shift() )(frags,req,res);
+	} else {
+		//	index
+		var index = [
+			'/datas/git/log',
+			'/datas/git/diff'
+		];
+		res.end( JSON.stringify(index) );
 	}
-
-	repo.exec('log', spit );
-
 }
