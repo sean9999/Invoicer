@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf8" />
+		<title>periods</title>
+		<link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet' type='text/css' />
+		<link href='http://metricsgraphicsjs.org/css/metricsgraphics.css' rel='stylesheet' type='text/css' />
+		<link href='https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css' rel='stylesheet' type='text/css' />
+		<link href="styles/periods.css" rel="stylesheet" />
+		<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' defer></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js' charset='utf-8' defer></script>
+		<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js' defer></script>
+		<script src="http://metricsgraphicsjs.org/js/metricsgraphics.min.js" defer></script>
+		<script src="scripts/periods.js" defer></script>
+	</head>
+	<body>
+		<header>
+			<h1>i am a header</h1>
+		</header>
+		<div id="torso">
+			<h1 id="title">{{meta}}</h1>
+			<div id="p" hidden>
+				<h2>{{period}}</h2>
+				<figure>
+					<figcaption>{{period}}</figcaption>
+					<div class="graph"></div>
+				</figure>
+			</div>
+		</div>
+		<footer>
+			<p>i am a footer</p>
+		</footer>
+	</body>
+</html>

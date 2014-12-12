@@ -1,9 +1,8 @@
 "use strict";
 
-var docroot = require('docroot');
 var Repo = require('git-tools');
 var repo = new Repo( '/Users/seanmacdonald/REPOS/numops/' );
-var AUTHOR_REGEX = /crazyhorsecoding\.com/;
+var AUTHOR_REGEX = 'crazyhorsecoding';
 
 /**
  * return an array analogous to "git log"
@@ -42,13 +41,11 @@ module.exports = function(frags,req,res){
 				}
 			}
 			return o;
-		}).filter(function(commit){
-			return ( "author" in commit && AUTHOR_REGEX.test(commit.author) );
 		});
 		if (err) {
 			console.log(err);
 		}
-		res.end(JSON.stringify(nicecommits));
+		res.end(JSON.stringify( nicecommits ));
 	}
-	repo.exec('log', spit );
+	repo.exec('log', '--author=' + AUTHOR_REGEX, spit );
 }

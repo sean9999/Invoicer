@@ -8,7 +8,7 @@ module.exports = function(frags,req,res) {
 		//	index
 		var index = [
 			'/datas/git/log',
-			'/datas/git/diff'
+			'/datas/git/activedays'
 		];
 		res.end( JSON.stringify(index) );
 	}
