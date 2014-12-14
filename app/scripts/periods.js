@@ -18,18 +18,24 @@ $(function(){
 			p.prop('id', id);
 			p.appendTo('#torso');
 
+			//	fake velocity stats
 			var fakeData = periods[k].fileOps.map(function(row,i,a){
-				var prev=row, next=row, velocity;
-				if (i > 0) {
-					prev = a[i-1];
+				var prev, next, h=i-1,j=i+1;
+				if (h in a && j in a) {
+					prev = a[h];
+					next = a[j];
+					row.n = (1 / (next.ts - prev.ts)) * 1000;
+					console.log(row.n);
+				} else {
+					row.n = null;
 				}
-				if (i < a.length-1) {
-					next = a[i+1];
-				}
-				velocity = next.ts - prev.ts;
-				row.n = velocity;
 				row.d = new Date( row.ts );
 				return row;
+			});
+
+			//	chop off the first and last record, because they cannot reference their neighbours
+			fakeData = fakeData.filter(function(row){
+				return ( row.n );
 			});
 
 			data_graphic({
