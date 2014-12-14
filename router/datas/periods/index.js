@@ -7,26 +7,13 @@ var uuid = require('node-uuid');
 
 var mimetypes = require('mimetypes.json');
 var sql = require('sqlite3');
-var db_paths = [
-	'./data/all.sqlite3'
-];
+var db_paths = [ './data/all.sqlite3' ];
 var dbz = {};
 var allrecords = [];
 
 var shortMonths = [
 	'Jan','Feb','March','April','May','June','July','Aug','Sep','Oct','Nov','Dec'
 ];
-
-/**
- * a sorting function
- * intended to passed to Array.sort()
- * @param  {Any} array element
- * @param  {Any} next array element
- * @return {void} return value is unimportant. Operates directly on array
- */
-function byTimeStamp(a,b) {
-	if (a.ts < b.ts) return -1; else if (a.ts > b.ts) return 1; else return 0;
-};
 
 /**
  * get all records from `fspruned` table of 1 or more sqllite databases
@@ -43,7 +30,9 @@ function withAllRecords(cb) {
 				} else {
 					allrecords = allrecords.concat(rows);
 					if (i === db_paths.length-1) {
-						allrecords.sort(byTimeStamp);
+						allrecords.sort( function(a,b) {
+							if (a.ts < b.ts) return -1; else if (a.ts > b.ts) return 1; else return 0;
+						});
 						cb(allrecords);
 					}
 				}
@@ -61,7 +50,7 @@ function withRecordsBetween(cb,startDate,endDate) {
 	db_paths.forEach(function(path,i){
 		dbz[path] = new sql.Database(path,sql.OPEN_READONLY);
 		dbz[path].serialize(function() {
-			dbz[path].all('SELECT * FROM `fs` WHERE ts >= ' + startDate + ' AND ts < ' + endDate,function(err,rows){
+			dbz[path].all('SELECT * FROM `fspruned` WHERE ts >= ' + startDate + ' AND ts < ' + endDate,function(err,rows){
 				if (err) {
 					console.error(err);
 				} else {

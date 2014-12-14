@@ -4,6 +4,30 @@
 		"selected_items":
 		[
 			[
+				"is",
+				"isSane"
+			],
+			[
+				"set",
+				"setTimeout  (function)"
+			],
+			[
+				"b",
+				"bgColor  (variable)"
+			],
+			[
+				"in",
+				"invoicid"
+			],
+			[
+				"just",
+				"justAfter"
+			],
+			[
+				"line",
+				"line_id"
+			],
+			[
 				"lar",
 				"largest_val"
 			],
@@ -429,7 +453,16 @@
 	},
 	"file_history":
 	[
+		"/Users/seanmacdonald/REPOS/Invoicer/app/scripts/periods.js",
+		"/Users/seanmacdonald/REPOS/Invoicer/app/scripts/git.js",
+		"/Users/seanmacdonald/REPOS/Invoicer/app/index.html",
+		"/Users/seanmacdonald/REPOS/Invoicer/app/git.html",
+		"/Users/seanmacdonald/REPOS/Invoicer/app/periods.html",
 		"/Users/seanmacdonald/REPOS/Invoicer/app.js",
+		"/Users/seanmacdonald/REPOS/Invoicer/router/datas/periods/index.js",
+		"/Users/seanmacdonald/REPOS/Invoicer/app/styles/periods.css",
+		"/Users/seanmacdonald/REPOS/Invoicer/data/dump5.sql",
+		"/Users/seanmacdonald/REPOS/Invoicer/data/dump4.sql",
 		"/Users/seanmacdonald/REPOS/Invoicer/app/so.html",
 		"/Users/seanmacdonald/Dropbox/Desktopz/so.js",
 		"/Users/seanmacdonald/REPOS/numops/app/scripts/controllers/orders.js",
@@ -547,16 +580,7 @@
 		"/Users/seanmacdonald/REPOS/sean9999.github.io/javascripts/retina.js",
 		"/Users/seanmacdonald/code/so/so_22187278.js",
 		"/Users/seanmacdonald/code/somongo/fill.js",
-		"/Users/seanmacdonald/REPOS/brain/scripts/lampy_tools/upgrade/upgrader.js",
-		"/Users/seanmacdonald/REPOS/imageSquare/guest/www/domains/imagesquare/prod/inc/pageHead.php",
-		"/Users/seanmacdonald/REPOS/imageSquare/guest/www/domains/imagesquare/prod/z/js/global.js",
-		"/Users/seanmacdonald/REPOS/imageSquare/guest/www/domains/imagesquare/prod/z/css/global.css",
-		"/Users/seanmacdonald/REPOS/imageSquare/host/proxyserver/server.js",
-		"/Users/seanmacdonald/REPOS/imageSquare/guest/www/domains/imagesquare/prod/web/index.php",
-		"/Users/seanmacdonald/REPOS/imageSquare/host/bootstrap",
-		"/Users/seanmacdonald/REPOS/imageSquare/host/bootstrap.js",
-		"/Users/seanmacdonald/REPOS/imageSquare/proxyserver/server.js",
-		"/Users/seanmacdonald/Library/Application Support/Sublime Text 3/Packages/User/JavaScript.sublime-settings"
+		"/Users/seanmacdonald/REPOS/brain/scripts/lampy_tools/upgrade/upgrader.js"
 	],
 	"find":
 	{
@@ -574,6 +598,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"false",
 			"sqlitedb",
 			"Auth",
 			"getRemoteRecord",
@@ -696,7 +721,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 291.0,
+	"side_bar_width": 373.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
