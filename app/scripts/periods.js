@@ -20,12 +20,25 @@ $(function(){
 
 			//	fake velocity stats
 			var fakeData = periods[k].fileOps.map(function(row,i,a){
-				var prev, next, h=i-1,j=i+1;
-				if (h in a && j in a) {
-					prev = a[h];
-					next = a[j];
+				var prev=row, next=row, h=i, j=i;
+				while ( prev && row.ts === prev.ts ) {
+					h--;
+					if (h in a) {
+						prev = a[h];
+					} else {
+						prev = null;
+					}
+				}
+				while ( next && row.ts === next.ts ) {
+					j++;
+					if (j in a) {
+						next = a[j];
+					} else {
+						next = null;
+					}
+				}
+				if (prev && next) {
 					row.n = (1 / (next.ts - prev.ts)) * 1000;
-					console.log(row.n);
 				} else {
 					row.n = null;
 				}
@@ -34,15 +47,21 @@ $(function(){
 			});
 
 			//	chop off the first and last record, because they cannot reference their neighbours
+			//	also prune illegal or paradoxical values
 			fakeData = fakeData.filter(function(row){
-				return ( row.n );
+				var isSane = true;
+				if (!row.n) isSane = false;
+				if ( row.n === Number.POSITIVE_INFINITY ) isSane = false;
+				if ( isNaN(row.n) ) isSane = false;
+				if (typeof row.n !== 'number') isSane = false;
+				return isSane;
 			});
 
 			data_graphic({
 				title: k,
 				description: 'file operations per hour',
 				data: fakeData,
-				width: $(window).width() * 4,
+				width: $(window).width() -100,
 				height: $(window).height() - 200,
 				target: '#' + id + ' .graph',
 				x_accessor: 'd',
@@ -50,8 +69,8 @@ $(function(){
 				min_x: new Date( periods[k]._range.raw.start ),
 				max_x: new Date( periods[k]._range.raw.end ),
 				point_size: 3,
-				x_rug: false,
-				y_rug: true,
+				x_rug: true,
+				y_rug: false,
 				interpolate: 'linear'
 			});
 

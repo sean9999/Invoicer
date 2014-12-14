@@ -8,9 +8,7 @@ var uuid = require('node-uuid');
 var mimetypes = require('mimetypes.json');
 var sql = require('sqlite3');
 var db_paths = [
-	'./data/macmini.sqlite3',
-	'./data/retina.2.logz.sqlite3',
-	'./data/retina1.logz.sqlite3'
+	'./data/all.sqlite3'
 ];
 var dbz = {};
 var allrecords = [];
@@ -19,17 +17,33 @@ var shortMonths = [
 	'Jan','Feb','March','April','May','June','July','Aug','Sep','Oct','Nov','Dec'
 ];
 
+/**
+ * a sorting function
+ * intended to passed to Array.sort()
+ * @param  {Any} array element
+ * @param  {Any} next array element
+ * @return {void} return value is unimportant. Operates directly on array
+ */
+function byTimeStamp(a,b) {
+	if (a.ts < b.ts) return -1; else if (a.ts > b.ts) return 1; else return 0;
+};
+
+/**
+ * get all records from `fspruned` table of 1 or more sqllite databases
+ * @param  {Function} cb The callback to execute once we have the data
+ * @return {void}      returns nothing. That's why we pass in a callback
+ */
 function withAllRecords(cb) {
 	db_paths.forEach(function(path,i){
 		dbz[path] = new sql.Database(path,sql.OPEN_READONLY);
 		dbz[path].serialize(function() {
-			dbz[path].all('SELECT * FROM `fs`',function(err,rows){
+			dbz[path].all('SELECT * FROM `fspruned`',function(err,rows){
 				if (err) {
 					console.error(err);
 				} else {
 					allrecords = allrecords.concat(rows);
 					if (i === db_paths.length-1) {
-						allrecords.sort(function(a,b){ if (a.ts < b.ts) return -1; else if (a.ts > b.ts) return 1; else return 0; });
+						allrecords.sort(byTimeStamp);
 						cb(allrecords);
 					}
 				}
@@ -39,6 +53,10 @@ function withAllRecords(cb) {
 	});
 }
 
+/**
+ * Same as withAllRecords, but with a date range
+ * @see whithAllRecords()
+ */
 function withRecordsBetween(cb,startDate,endDate) {
 	db_paths.forEach(function(path,i){
 		dbz[path] = new sql.Database(path,sql.OPEN_READONLY);
@@ -58,6 +76,11 @@ function withRecordsBetween(cb,startDate,endDate) {
 	});
 }
 
+/**
+ * Take `git log`, and return nicely formatted objects
+ * @param  {String} huge string as returned by `git log`
+ * @return {Array}  of nicely formatted objects representing each commit
+ */
 var formatCommits = function(result){
 	var rawcommits	= result.split(/\n\ncommit\s/g);
 	var nicecommits = rawcommits.map(function(rawcommit){
@@ -149,7 +172,7 @@ module.exports = function(frags,req,res) {
 			if ( endDate.getUTCDate() < 15 ) {
 				endDate = new Date( endDate.getUTCFullYear(), endDate.getUTCMonth(), 14 );
 			} else {
-				endDate = new Date( endDate.getUTCFullYear(), endDate.getUTCMonth()+1, 0 );	
+				endDate = new Date( endDate.getUTCFullYear(), endDate.getUTCMonth()+1, 0 );
 			}
 			endDate.setUTCHours(23,59,59,999);
 			r['_meta'] = {
@@ -181,7 +204,7 @@ module.exports = function(frags,req,res) {
 						},
 						pretty: {
 							start: thisWeekStart.toUTCString(),
-							end: thisWeekEnd.toUTCString()							
+							end: thisWeekEnd.toUTCString()
 						}
 					},
 					fileOps: fileOps,
