@@ -18,7 +18,6 @@ var server = http.createServer(function (req, res) {
 	}
 	switch (path_fragments[0]) {
 		case 'datas':
-		case 'foo':
 		router(path_fragments,req,res);
 		break;
 		case 'bower_components':
