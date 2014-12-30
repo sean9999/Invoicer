@@ -107,7 +107,7 @@ $(function(){
 				return isSane;
 			});
 
-			data_graphic({
+			MG.data_graphic({
 				title: k,
 				description: 'file operations per hour',
 				data: sData,
