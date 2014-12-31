@@ -1,11 +1,11 @@
 "use strict";
 
-var finalhandler = require('finalhandler'),
-	fs = require('fs'),
-	http = require('http'),
-	mimetypes = require('mimetypes.json'),
-	router = require('./router'),
-	url = require('url'),
+var finalhandler= require('finalhandler'),
+	fs 			= require('fs'),
+	http 		= require('http'),
+	mimetypes 	= require('mimetypes.json'),
+	router 		= require('./router'),
+	url 		= require('url'),
 	fileExtension = function(){
 		var r = null;
 		var request = url.parse(this.url);
@@ -22,13 +22,13 @@ var finalhandler = require('finalhandler'),
 
 var server = http.createServer(function (req, res) {
 	var done = finalhandler(req, res);
-	var path_fragments = req.url.split('/').filter(function(frag){ return frag; });
+	var request = url.parse(req.url);
+	var path_fragments = request.pathname.split('/').filter(function(frag){ return frag; });
 	if (!(0 in path_fragments)) {
 		path_fragments[0] = 'index.html';
 		req.url = '/index.html';
 	}
 	switch (path_fragments[0]) {
-
 		case 'debug':
 		case 'eval':
 		var ext = fileExtension.call(req);
@@ -40,12 +40,10 @@ var server = http.createServer(function (req, res) {
 		res.setHeader('Content-Type', mimetypes.json);
 		res.end(JSON.stringify(r));
 		break;
-
 		case 'datas':
 		router(path_fragments,req,res);
 		break;
 		case 'bower_components':
-		var request = url.parse(req.url);
 		fs.readFile('.' + request.pathname , function (err, buf) {
 			if (err) return done(err);
 			res.setHeader('Content-Type', mimeType(fileExtension.call(req)));
@@ -53,7 +51,6 @@ var server = http.createServer(function (req, res) {
 		});
 		break;
 		default:
-		var request = url.parse(req.url);
 		fs.readFile('./app' + request.pathname , function (err, buf) {
 			if (err) return done(err);
 			res.setHeader('Content-Type', mimeType(fileExtension.call(req)));

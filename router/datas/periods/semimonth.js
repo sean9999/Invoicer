@@ -1,10 +1,15 @@
 "use strict";
 
+//	helpers
+var url = require('url');
+
+//	git
 var Repo = require('git-tools');
 var repo = new Repo( '/Users/seanmacdonald/REPOS/numops/' );
 var AUTHOR_REGEX = 'crazyhorsecoding';
 var uuid = require('node-uuid');
 
+//	sqlite
 var mimetypes = require('mimetypes.json');
 var sql = require('sqlite3');
 var db_paths = [ './data/all.sqlite3' ];
@@ -18,7 +23,7 @@ var shortMonths = [
 /**
  * get all records from `fspruned` table of 1 or more sqllite databases
  * @param  {Function} cb The callback to execute once we have the data
- * @return {void}      returns nothing. That's why we pass in a callback
+ * @return {void} returns nothing. That's why we pass in a callback
  */
 function withAllRecords(cb) {
 	db_paths.forEach(function(path,i){
@@ -226,8 +231,37 @@ module.exports = function(frags,req,res) {
 		});
 		break;
 
+		case 'binned':
+		var request = url.parse(req.url,true);
+		if ( "size" in request.query ) {
+
+			//	size should be number of seconds in bin (ex: 1-hour bins would be size=3600 )
+
+		} else {
+			res.end(
+				JSON.stringify(
+					{
+						"msg": "no bin size specified or invalid bin size"
+					}
+				)
+			);
+		}
+		res.end(
+			JSON.stringify({
+				request: request,
+				frags: frags,
+				thing: "thang"
+			})
+		);		
+		break;
+
 		default:
-		res.end( JSON.stringify(frags) );
+		res.end(
+			JSON.stringify({
+				frags: frags,
+				msg: "This route was not defined"
+			})
+		);
 		break;
 
 	}
