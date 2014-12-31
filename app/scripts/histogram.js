@@ -7,7 +7,7 @@ $(function(){
 		if (typeof thedatas[0] === 'object') {
 			metadata = thedatas.shift();
 		}
-		data_graphic({
+		MG.data_graphic({
 			title: 'Hours Logged',
 			description: 'on nuMops, as tracked by grunt-watch',
 			data: thedatas,

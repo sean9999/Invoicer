@@ -5,7 +5,7 @@ function byVal(i) {
 }
 
 $(function(){
-	d3.json('/datas/periods',function( periods ){
+	d3.json('/datas/periods/semimonth',function( periods ){
 		var k,
 			id,
 			p,

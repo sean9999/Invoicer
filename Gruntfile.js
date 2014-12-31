@@ -1,6 +1,5 @@
 'use strict';
 
-
 module.exports = function (grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
@@ -157,8 +156,7 @@ module.exports = function (grunt) {
     wiredep: {
       app: {
         ignorePath: /^\/|\.\.\//,
-        src: ['<%= config.app %>/index.html'],
-        exclude: ['bower_components/bootstrap/dist/js/bootstrap.js']
+        src: ['<%= config.app %>/*.html']
       }
     },
 
