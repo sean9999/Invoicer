@@ -1,3 +1,5 @@
+/* global hljs: false */
+
 ;(function(undefined){
 	"use strict";
 	$(function(){

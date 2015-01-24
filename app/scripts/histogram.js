@@ -1,3 +1,7 @@
+/* jshint camelcase: false */
+/* global data_graphic: false, d3: false */
+
+
 "use strict";
 
 $(function(){
@@ -20,6 +24,6 @@ $(function(){
 			animate_on_load: true,
 			x_label: "date as timestamp",
 			y_label: "n fs ops"
-		});	
+		});
 	});
 });
